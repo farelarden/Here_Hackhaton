@@ -15,17 +15,6 @@
     </style>
 </head>
 <body>
-    <form method="POST">
-        <input type="text" name="location" placeholder="Enter a location (e.g., New York)">
-        <input type="submit" value="Show Map">
-    </form>
-    <div>
-        <label for="mapType">Select Map Type: </label>
-        <select id="mapType" onchange="changeMapType()">
-            <option value="vector.normal.map">Street View</option>
-            <option value="raster.satellite.map">Satellite View</option>
-        </select>
-    </div>
     <div id="map"></div>
     <script>
         // Initialize the platform with your API key
@@ -33,34 +22,24 @@
             'apikey': '{{ api_key }}'
         });
 
-        // Get the default map layers
+        // Get the default map types
         var defaultLayers = platform.createDefaultLayers();
 
-        // Initialize the map with the default street view
+        // Initialize the map
         var map = new H.Map(
             document.getElementById('map'),
             defaultLayers.vector.normal.map,
             {
                 zoom: 10,
-                center: { lat: {{ lat }}, lng: {{ lng }} }
+                center: { lat: 37.7749, lng: -122.4194 } // Default: San Francisco
             }
         );
 
         // Enable map interactions (zoom, pan)
         var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
-        // Add default UI components (zoom controls, etc.)
+        // Add the default UI components (zoom controls, etc.)
         var ui = H.ui.UI.createDefault(map, defaultLayers);
-
-        // Function to change the map type dynamically
-        function changeMapType() {
-            var selectedType = document.getElementById('mapType').value;
-            if (selectedType === 'vector.normal.map') {
-                map.setBaseLayer(defaultLayers.vector.normal.map);
-            } else if (selectedType === 'raster.satellite.map') {
-                map.setBaseLayer(defaultLayers.raster.satellite.map);
-            }
-        }
     </script>
 </body>
 </html>
